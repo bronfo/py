@@ -1,14 +1,16 @@
-import SimpleHTTPServer
-import SocketServer
+try:
+    import http.server as httpsvr
+except ImportError:
+    import SimpleHTTPServer as httpsvr
+try:
+    import socketserver
+except ImportError:
+    import SocketServer as socketserver
 
 PORT = 8080
 
-class WebRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
-	def do_GET(self):
-		self.wfile.write("hi")
-Handler = WebRequestHandler
+Handler = httpsvr.SimpleHTTPRequestHandler
 
-httpd = SocketServer.TCPServer(("", PORT), Handler)
-
-print "serving at port", PORT
+httpd = socketserver.TCPServer(("", PORT), Handler)
+print("serving at port", PORT)
 httpd.serve_forever()
